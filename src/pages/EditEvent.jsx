@@ -227,7 +227,7 @@ const EditEvent = ({ user }) => {
         setInstancesToShow(newInstancesToShow)
     }, [instances, selectedCalendarValue])
 
-    useEffect(updateEventStates, [update])
+    //useEffect(updateEventStates, [update])
 
     const publishEvent = () => {
         if (instances.length == 0) {

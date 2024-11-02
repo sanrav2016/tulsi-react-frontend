@@ -21,6 +21,7 @@ const Login = () => {
     useEffect(() => {
         if (cookies.get('user') == null) return
         navigate('/', { replace: true })
+        document.addEventListener("keyup", (e) => e.key == 13 ? startLogin() : null)
     }, [])
 
     const postLogin = (u, c) => {
@@ -40,7 +41,9 @@ const Login = () => {
         if (emailInput == "" || passwordInput == "") return
         const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(passwordInput, salt);
+        toast.loading("Signing in...");
         client.fetch(`*[_type == 'user' && email == '${emailInput.trim().toLowerCase()}']`).then((data) => {
+            toast.dismiss();
             if (data.length != 1)
                 return toast.error("Account not found.")
             if (!bcrypt.compareSync(passwordInput, data[0].password))
@@ -85,7 +88,9 @@ const Login = () => {
                                 <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} className="checkbox checkbox-xs" />
                                 <span className="label-text text-xs">Remember me</span>
                             </label>
-                            <button onClick={startLogin} className="nova btn btn-neutral w-full rounded-t-none">Login</button>
+                            <button onClick={startLogin} className="nova btn btn-neutral w-full rounded-t-none">
+                                Login
+                            </button>
                         </div>
                     </div>
                 </div>
